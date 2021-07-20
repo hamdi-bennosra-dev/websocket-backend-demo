@@ -3,6 +3,8 @@
  */
 package com.websocket.demo.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -62,6 +64,18 @@ public class AuthorController {
 		}
 
 		return null;
+	}
+	
+	@GetMapping
+	@ResponseBody
+	public List<AuthorDTO> getAuthors() {  
+		List<AuthorDTO> authors = new ArrayList<>();
+
+		for (Author author : authorRepository.findAll()) {
+			authors.add(convertToDto(author));
+		}
+
+		return authors;
 	}
 
 	private Author convertToEntity(AuthorDTO authorDto) {
