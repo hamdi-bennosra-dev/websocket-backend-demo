@@ -13,6 +13,8 @@ import javax.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -138,6 +140,22 @@ public class BookController {
 		return books;
 	}
 
+	@MessageMapping("/book-added")
+	@SendTo("/books/channel")
+	public BookDTO bookAdded(String id) throws InterruptedException {
+		Thread.sleep(1000); // simulated delay
+		Optional<Book> response = bookRepository.findById(Long.valueOf(id));
+
+		if (response.isPresent()) {
+			return convertToDto(response.get());
+		}
+
+		return null;
+	}
+
+	/*
+	 * Utils
+	 */
 	private Book convertToEntity(BookDTO bookDto) {
 		return modelMapper.map(bookDto, Book.class);
 	}
