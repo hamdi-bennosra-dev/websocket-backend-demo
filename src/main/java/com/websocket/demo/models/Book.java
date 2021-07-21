@@ -13,6 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.websocket.demo.utils.FileUploadUtil;
 
 /**
  * @author hamdi
@@ -34,6 +37,9 @@ public class Book implements Serializable {
 	@Column(name = "title")
 	private String title;
 
+    @Column(name="cover")
+    private String cover;
+	
 	@ManyToOne
 	@JoinColumn(name = "author_fk")
 	private Author author;
@@ -58,4 +64,19 @@ public class Book implements Serializable {
 		return id;
 	}
 
+	public String getCover() {
+		return cover;
+	}
+
+	public void setCover(String cover) {
+		this.cover = cover;
+	}
+	
+	@Transient
+    public String getCoverImagePath() {
+        if (this.cover == null || this.id == null) return null;
+         
+        return FileUploadUtil.BOOK_IMG_DIR + id + "/" + this.cover;
+    }
+	
 }

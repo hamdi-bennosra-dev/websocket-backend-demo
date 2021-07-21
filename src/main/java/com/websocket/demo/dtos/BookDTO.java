@@ -4,15 +4,18 @@
 package com.websocket.demo.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.websocket.demo.utils.FileUploadUtil;
 
 /**
- * @author hamdi
+ * @author Hamdi Ben Nosra (hamdi.bennosra.dev@gmail.com)
  *
  */
 public class BookDTO {
 	private Long id;
 
 	private String title;
+
+	private String cover;
 
 	@JsonIgnoreProperties(value = { "books" }, allowSetters = true)
 	private AuthorDTO author;
@@ -33,6 +36,14 @@ public class BookDTO {
 		this.title = title;
 	}
 
+	public String getCover() {
+		return cover;
+	}
+
+	public void setCover(String cover) {
+		this.cover = cover;
+	}
+
 	public AuthorDTO getAuthor() {
 		return author;
 	}
@@ -40,5 +51,11 @@ public class BookDTO {
 	public void setAuthor(AuthorDTO author) {
 		this.author = author;
 	}
+	
+	public String getCoverImagePath() {
+        if (this.cover == null || this.id == null) return null;
+         
+        return FileUploadUtil.BOOK_IMG_DIR + id + "/" + this.cover;
+    }
 
 }

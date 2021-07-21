@@ -14,6 +14,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.websocket.demo.utils.FileUploadUtil;
 
 /**
  * @author hamdi
@@ -40,6 +43,9 @@ public class Author implements Serializable {
 
 	@Column(name = "phone_number")
 	private String phoneNumber;
+
+	@Column(name = "portrait")
+	private String portrait;
 
 	@OneToMany(mappedBy = "author", orphanRemoval = true, cascade = CascadeType.ALL)
 	private Set<Book> books;
@@ -72,6 +78,14 @@ public class Author implements Serializable {
 		return id;
 	}
 
+	public String getPortrait() {
+		return portrait;
+	}
+
+	public void setPortrait(String portrait) {
+		this.portrait = portrait;
+	}
+
 	public Set<Book> getBooks() {
 		return books;
 	}
@@ -79,5 +93,11 @@ public class Author implements Serializable {
 	public void setBooks(Set<Book> books) {
 		this.books = books;
 	}
-
+	
+	@Transient
+    public String getPortraitImagePath() {
+        if (this.portrait == null || this.id == null) return null;
+         
+        return FileUploadUtil.AUTHOR_IMG_DIR + id + "/" + this.portrait;
+    }
 }

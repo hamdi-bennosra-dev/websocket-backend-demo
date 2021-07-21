@@ -5,8 +5,10 @@ package com.websocket.demo.dtos;
 
 import java.util.Set;
 
+import com.websocket.demo.utils.FileUploadUtil;
+
 /**
- * @author hamdi
+ * @author Hamdi Ben Nosra (hamdi.bennosra.dev@gmail.com)
  *
  */
 public class AuthorDTO {
@@ -17,6 +19,8 @@ public class AuthorDTO {
 	private String surname;
 
 	private String phoneNumber;
+
+	private String portrait;
 
 	private Set<BookDTO> books;
 
@@ -60,4 +64,17 @@ public class AuthorDTO {
 		this.books = books;
 	}
 
+	public String getPortrait() {
+		return portrait;
+	}
+
+	public void setPortrait(String portrait) {
+		this.portrait = portrait;
+	}
+
+    public String getPortraitImagePath() {
+        if (this.portrait == null || this.id == null) return null;
+         
+        return FileUploadUtil.AUTHOR_IMG_DIR + id + "/" + this.portrait;
+    }
 }
